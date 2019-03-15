@@ -17,12 +17,21 @@ class GildedRose
         $this->sellIn = $sellIn;
     }
 
-    public static function of($name, $quality, $sellIn) {
+    public static function of($name, $quality, $sellIn)
+    {
         return new static($name, $quality, $sellIn);
     }
 
     public function tick()
     {
+        if ($this->name == 'normal') {
+            return $this->normalTick();
+        }
+
+        if ($this->name == 'Aged Brie') {
+            return $this->brieTick();
+        }
+
         if ($this->name != 'Aged Brie' and $this->name != 'Backstage passes to a TAFKAL80ETC concert') {
             if ($this->quality > 0) {
                 if ($this->name != 'Sulfuras, Hand of Ragnaros') {
@@ -69,5 +78,27 @@ class GildedRose
                 }
             }
         }
+    }
+
+    protected function normalTick()
+    {
+        $this->sellIn -= 1;
+
+        if ($this->quality == 0) {
+            return;
+        }
+
+        $this->quality -= 1;
+
+
+        if ($this->sellIn <= 0) {
+            $this->quality -= 1;
+        }
+
+    }
+
+    protected function brieTick()
+    {
+
     }
 }
